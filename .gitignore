@@ -1,0 +1,28 @@
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.bin
+*.app
+/bin/*
+.ccache/*
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+
+# Compiled Static libraries
+lib/*
+*.lai
+*.la
+*.a
+
+# Clion
+.idea/*
+
+# gtest
+tests/gtest-1.7.0/
+
+# temp files
+*.swp
+*~
