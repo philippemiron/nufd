@@ -12,7 +12,7 @@
 *.dylib
 
 # Compiled Static libraries
-lib/*
+nufd_tests/lib/*
 *.lai
 *.la
 *.a

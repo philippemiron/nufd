@@ -1,6 +1,6 @@
 #include "nufd.h"
 
-vector<double> fdcoef(int mord, int nord, double x0, const vector<double>::const_iterator grid) {
+vector<double> fdcoef(unsigned int mord, unsigned int nord, double x0, const vector<double>::const_iterator grid) {
   // this routine implements simple recursions for calculating the weights
   // of finite difference formulas for any order of derivative and any order
   // of accuracy on one-dimensional grids with arbitrary spacing.
@@ -59,12 +59,12 @@ vector<double> fdcoef(int mord, int nord, double x0, const vector<double>::const
 
   // load the coefficients
   for (int nu(0); nu<nord; nu++)
-    coef[nu] = weight[mord-1][nord-1][nu];
+    coef[nu] = double(weight[mord-1][nord-1][nu]);
 
   return coef;
 }
 
-vector<double> fd(int m, int n, const vector<double>& grid, const vector<double>& u) {
+vector<double> fd(unsigned int m, unsigned int n, const vector<double>& grid, const vector<double>& u) {
   // this routine computes the order m derivatives
   // using n points on an arbitrary grid
 
@@ -76,7 +76,7 @@ vector<double> fd(int m, int n, const vector<double>& grid, const vector<double>
 
   // output:
   // du[ngrid]   = first derivative values at the grid points
-  int ngrid = int(grid.size());
+  size_t ngrid(grid.size());
   vector<double> du(ngrid, 0.0);
   vector<double> coef(n, 0.0);
 
@@ -107,7 +107,7 @@ vector<double> fd(int m, int n, const vector<double>& grid, const vector<double>
   }
 
   // end of grid (backward differences)
-  for (int i(ngrid-fb); i<ngrid; i++) {
+  for (size_t i(ngrid-fb); i<ngrid; i++) {
     coef = fdcoef(m, n, grid[i], end-n);
     for (int j(0); j<n; j++)
       du[i] = du[i] + coef[j]*u[ngrid-n+j];
@@ -133,12 +133,12 @@ vector<double> fss002(const vector<double>& grid, const vector<double>& u) {
 
   // output:
   // du[ngrid]   = first derivative values at the grid points
-  int ngrid = grid.size();
+  size_t ngrid(grid.size());
   vector<double> du(ngrid, 0.0);
 
   // m: 1=value, 2=1st diff, 3=2nd diff
   // n: number of points use in fd schemes
-  int m(2), n(5);
+  unsigned int m(2), n(5);
   vector<double> coef(n, 0.0);
   auto grid_it = grid.cbegin();
 
@@ -147,7 +147,7 @@ vector<double> fss002(const vector<double>& grid, const vector<double>& u) {
   du[0] = coef[0]*u[0] + coef[1]*u[1] + coef[2]*u[2];
 
   // middle of the grid; central differences
-  for (int i(1); i<ngrid-1; i++) {
+  for (size_t i(1); i<ngrid-1; i++) {
     coef = fdcoef(m, n, grid[i], grid_it+i-1);
     du[i] = coef[0] * u[i - 1] + coef[1] * u[i] + coef[2] * u[i + 1];
   }
@@ -171,46 +171,46 @@ vector<double> fss004(const vector<double>& grid, const vector<double>& u) {
 
   // output:
   // du[ngrid]   = second derivative values at the grid points
-  int ngrid = grid.size();
+  size_t ngrid(grid.size());
   vector<double> du(ngrid, 0.0);
 
   // local variables
   // m: 1=value, 2=1st diff, 3=2nd diff
   // n: number of points use in fd schemes
-  int m(3), n(5);
+  unsigned int m(3), n(5);
   vector<double> coef(n, 0.0);
   auto grid_it = grid.cbegin();
 
   // first point; one sided
   // evaluation point + 4 to the right
   coef = fdcoef(m, n, grid[0], grid_it);
-  for (int j(0); j<n; j++)
+  for (size_t j(0); j<n; j++)
     du[0] = du[0] + coef[j]*u[j];
 
   // second point; one sided
   // 1 point to the left + evaluation point + 3 to the right
   coef = fdcoef(m, n, grid[1], grid_it);
-  for (int j(0); j<n; j++)
+  for (size_t j(0); j<n; j++)
     du[1] = du[1] + coef[j]*u[j];
 
   // middle of the grid; central differences
-  for (int i(2); i<ngrid-2; i++) {
+  for (size_t i(2); i<ngrid-2; i++) {
     coef = fdcoef(m, n, grid[i], grid_it+i-2);
 
-    for (int j(0); j<n; j++)
+    for (size_t j(0); j<n; j++)
       du[i] = du[i] + coef[j]*u[i+j-2];
   }
 
   // second to last point; one sided
   // 4 to the left + evaluation point
   coef = fdcoef(m, n, grid[ngrid-2], grid_it+ngrid-n);
-  for (int j(0); j<n; j++)
+  for (size_t j(0); j<n; j++)
     du[ngrid-2] = du[ngrid-2] + coef[j]*u[ngrid+j-n];
 
   // last point; one sided
   // 3 to the right + evaluation point + 1 point to the right
   coef = fdcoef(m, n, grid[ngrid-1], grid_it+ngrid-n);
-  for (int j(0); j<n; j++)
+  for (size_t j(0); j<n; j++)
     du[ngrid-1] = du[ngrid-1] + coef[j]*u[ngrid+j-n];
 
   return du;

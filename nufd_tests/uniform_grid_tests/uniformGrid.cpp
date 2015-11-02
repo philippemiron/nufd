@@ -1,6 +1,5 @@
-#include "gtest/gtest-spi.h"
 #include "gtest/gtest.h"
-#include "../nufd.h"
+#include "nufd.h"
 
 class uniformGrid : public ::testing::Test {
   protected:
