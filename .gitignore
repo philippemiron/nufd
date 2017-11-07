@@ -19,6 +19,9 @@ nufd_tests/lib/*
 
 # Clion
 .idea/*
+cmake-build-default/*
+cmake-build-debug/*
+cmake-build-release/*
 
 # gtest
 tests/gtest-1.7.0/

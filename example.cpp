@@ -25,6 +25,7 @@ int main() {
     xgrid[i] = xgrid[i - 1] + dx[i];
   }
 
+  // compute exact values
   for (int i(0); i < ngrid; i++) {
     f[i] = sin(xgrid[i]);
     df[i] = cos(xgrid[i]);

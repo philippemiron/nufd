@@ -2,8 +2,6 @@ cmake_minimum_required(VERSION 3.2)
 project(nufd)
 
 add_definitions(-std=c++11)
-
-
 include_directories(src)
 set(SOURCE_FILES example.cpp)
 
